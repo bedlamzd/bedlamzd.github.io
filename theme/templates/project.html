@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid article">
+    <div class="container article__header">
+        <h1>{{ article.title }}</h1>
+        <h2>{{ article.description}}</h2>
+    </div>
+
+    <div class="container article_img">
+        <img src="{{SITEURL}}/img/{{article.relative_source_path | strip_ext}}/cover.png" alt="{{ article.title }}">
+        {% if article.cover_text %}<p>{{ article.cover_text}}</p>{% endif %}
+    </div>
+
+    <div class="container article_text">
+        {{article.content}}
+    </div>
+</div>
+{% endblock content %}
+{% block extra_scripts %}
+<script type="text/javascript" src="slick/slick.min.js"></script>
+<script src="js/jsmain.js"></script>
+{% endblock %}
