@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import os
 import sys
 sys.path.append(os.curdir)
+sys.path.append(os.curdir + '/internals')
 
 import custom_filters
 
