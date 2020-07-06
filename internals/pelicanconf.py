@@ -31,8 +31,7 @@ DEFAULT_DATE_FORMAT = '%a %d %B %Y'
 
 MENUITEMS = (
     # ('ГЛАВНАЯ', ''),
-    ('Подробнее', 'about.html'),
-
+    # ('Подробнее', 'about.html'),
 )
 
 SLUGIFY_SOURCE = 'basename'

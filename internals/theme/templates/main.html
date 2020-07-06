@@ -16,6 +16,10 @@
             <h3>Обо мне</h3>
             <hr>
             {{ page.content }}
+            <div class="main__button">
+                <a class="btn btn-dark btn-block" role="button"
+                   href="{{'about.html' | format_siteurl }}">Подробнее</a>
+            </div>
         </div>
     </div>
 </div>
@@ -31,9 +35,9 @@
                 {% set url = article.redirect | default(article.url) %}
                 <a href="{{ url | format_siteurl }}">
                     {% if article.thumb %}
-                        <img src="{{article.thumb | expand_link(article)}}" class="desk__img">
+                    <img src="{{article.thumb | expand_link(article)}}" class="desk__img">
                     {% else %}
-                        <img src="{{SITEURL + '/img/' + DEFAULT_THUMB}}" class="desk__img" style="background: white">
+                    <img src="{{SITEURL + '/img/' + DEFAULT_THUMB}}" class="desk__img" style="background: white">
                     {% endif %}
                     <div class="desk__text">
                         <h3 class="desk__zag">{{article.title}}</h3>
