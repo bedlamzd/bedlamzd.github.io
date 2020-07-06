@@ -28,7 +28,8 @@
         <div class="row">
             {% for article in articles if article.category == 'projects' %}
             <div class="col col-6 col-md-3 col-sm-6 desk__product" style="margin-left: auto;margin-right: auto;">
-                <a href="{{ article.url | format_siteurl }}">
+                {% set url = article.redirect | default(article.url) %}
+                <a href="{{ url | format_siteurl }}">
                     {% if article.thumb %}
                         <img src="{{article.thumb | expand_link(article)}}" class="desk__img">
                     {% else %}
@@ -40,7 +41,7 @@
                     </div>
                     <div class="desk__button">
                         <a class="btn btn-outline-warning btn-block" role="button"
-                           href="{{article.url | format_siteurl }}">УЗНАТЬ
+                           href="{{url | format_siteurl }}">УЗНАТЬ
                             БОЛЬШЕ</a>
                     </div>
                 </a>
@@ -53,6 +54,6 @@
 {% endblock content %}
 
 {% block extra_scripts %}
-<script type="text/javascript" src="slick/slick.min.js"></script>
-<script src="js/jsmain.js"></script>
+<script type="text/javascript" src="{{SITEURL}}/{{THEME_STATIC_DIR}}/slick/slick.min.js"></script>
+<script src="{{SITEURL}}/{{THEME_STATIC_DIR}}/js/jsmain.js"></script>
 {% endblock extra_scripts %}
