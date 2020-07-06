@@ -39,7 +39,10 @@ SLUGIFY_SOURCE = 'basename'
 
 PLUGIN_PATHS = ['pelican_plugins', ]
 
-PLUGINS = ['m.htmlsanity', ]
+PLUGINS = [
+    'm.htmlsanity',
+    'pelican_alias',
+]
 
 TIMEZONE = 'Europe/Moscow'
 
