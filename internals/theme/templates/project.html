@@ -3,13 +3,14 @@
 <div class="container-fluid article">
     <div class="container article__header">
         <h1>{{ article.title }}</h1>
-        <h2>{{ article.description}}</h2>
     </div>
 
+    {% if article.cover %}
     <div class="container article_img">
-        <img src="{{SITEURL}}/img/{{article.relative_source_path | strip_ext}}/cover.png" alt="{{ article.title }}">
+        <img src="{{article.cover | expand_link(article)}}" alt="{{ article.title }}">
         {% if article.cover_text %}<p>{{ article.cover_text}}</p>{% endif %}
     </div>
+    {% endif %}
 
     <div class="container article_text">
         {{article.content}}
@@ -17,6 +18,6 @@
 </div>
 {% endblock content %}
 {% block extra_scripts %}
-<script type="text/javascript" src="slick/slick.min.js"></script>
-<script src="js/jsmain.js"></script>
+<script type="text/javascript" src="{{SITEURL}}/{{THEME_STATIC_DIR}}slick/slick.min.js"></script>
+<script src="{{SITEURL}}/{{THEME_STATIC_DIR}}js/jsmain.js"></script>
 {% endblock %}
