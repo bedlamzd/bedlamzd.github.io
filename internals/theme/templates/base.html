@@ -20,15 +20,15 @@
 <nav class="navbar navbar-expand-lg navbar-dark header sticky-top">
     <div class="container-fluid">
         <a href="{{SITEURL}}" class="navbar-brand"><!--<img src="{{SITEURL}}/img/{{LOGO}}">-->bedlamzd</a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarResponsive">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                {% for title, link in MENUITEMS %}
-                <li class="nav-item">
-                    <a href="{{link | format_siteurl }}" class="nav-link" style="color: white">{{title}}</a>
-                </li>
+<!--        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarResponsive">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div class="collapse navbar-collapse" id="navbarResponsive">-->
+<!--            <ul class="navbar-nav ml-auto">-->
+<!--                {% for title, link in MENUITEMS %}-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="{{link | format_siteurl }}" class="nav-link" style="color: white">{{title}}</a>-->
+<!--                </li>-->
                 {% endfor %}
             </ul>
         </div>
