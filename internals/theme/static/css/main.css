@@ -1,5 +1,7 @@
 /*Спецификация*/
 
+@import "pygments.css";
+
 body {
     font-family: 'Roboto', sans-sans-serif;
     background-color: #141414;
@@ -461,6 +463,19 @@ img {
     margin-bottom: 20px;
     text-align: left;
     max-width: 700px;
+}
+
+.article_text img{
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.article_text img + em {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
 }
 
 .article__code {
