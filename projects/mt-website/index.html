@@ -19,12 +19,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark header sticky-top">
     <div class="container-fluid">
         <a href="../.." class="navbar-brand"><!--<img src="../../img/">-->bedlamzd</a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarResponsive">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-            </ul>
+<!--        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarResponsive">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div class="collapse navbar-collapse" id="navbarResponsive">-->
+<!--            <ul class="navbar-nav ml-auto">-->
+<!--                -->
+<!--            </ul>-->
         </div>
     </div>
 </nav>
@@ -32,11 +33,77 @@
 <div class="container-fluid article">
     <div class="container article__header">
         <h1>MT.Website</h1>
+        8 Июль 2020
     </div>
 
 
     <div class="container article_text">
-        <p>Какой то контент</p>
+        <p><img alt="Лого MT.lab" src="../../img/mt-website/logo.png"></p>
+<p>Для лаборатории <a href="https://mtlab.su/">MT.lab</a> на основе подготовленных стилей сделал шаблоны и автоматическую публикацию
+сайта с помощью github actions.</p>
+<p>Сайт для простоты и легковестности решено было сделать статическим. Так как я больше всего знаком с Python, то был выбран
+генератор <a href="https://blog.getpelican.com/">Pelican</a>. Он умеет генерировать из reStructuredText и Markdown файлов страницы
+по заданным шаблонам. </p>
+<p><img alt="Внешний вид сайта" src="../../img/mt-website/screenshot1.png">
+<em>Внешний вид сайта</em></p>
+<p>Антон Мацуганов, участник лаборатории, подготовил "front" для сайта - целиком внешний вид и стиль сайта 
+(посмотреть можно <a href="https://github.com/mt-lab/mt-lab.github.io">тут</a>). Затем я выделил основные компоненты на сайте -
+карточки на главной, страницы под проекты и так далее - и подготовил шаблоны и иерархию для сайта. Для шаблонов в pelican
+используется язык <a href="https://jinja.palletsprojects.com/">Jinja2</a>, похожий на Django template language. Таким образом можно
+сделать например отображение активной вкладки из меню навигации.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">for</span> <span class="nv">title</span><span class="o">,</span> <span class="nv">link</span> <span class="k">in</span> <span class="nv">MENUITEMS</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">set</span> <span class="nv">full_link</span> <span class="o">=</span> <span class="nv">link</span> <span class="o">|</span> <span class="nf">format_siteurl</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">set</span> <span class="nv">curr_link</span> <span class="o">=</span> <span class="nv">output_file.replace</span><span class="o">(</span><span class="s1">&#39;index.html&#39;</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">)</span> <span class="o">|</span> <span class="nf">format_siteurl</span> <span class="cp">%}</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;nav-item </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">curr_link</span> <span class="o">==</span> <span class="nv">full_link</span> <span class="cp">%}</span><span class="s"> active </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span><span class="nv">full_link</span><span class="cp">}}</span><span class="s">&quot;</span> <span class="na">class=</span><span class="s">&quot;nav-link&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span><span class="nv">title</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+
+
+<p>Здесь фильтр formal_siteurl из плагина <a href="https://mcss.mosra.cz/plugins/htmlsanity/">htmlsanity</a> используется чтобы не
+писать неудобное <code>SITEURL + '/'</code>. Из-за того что многие страницы лежат по пути <code>path/to/page/index.html</code>, чтобы можно было
+переходить просто по адресу <code>path/to/page</code>, то из <code>output_file</code> нужно убирать <code>index.html</code> часть. Это конечно костыль,
+но с .htaccess пока проблемы и работает оно вот так.</p>
+<p>Самое интересное в публикации сайта. Сам сайт хостится с ftp сервера и руками заливать страницы на него не хотелось. И
+генерировать страницы каждый раз тоже не хотелось для этого (хотя для проверки всё равно придётся, но это мелочь).
+Благо у github есть actions, которые можно привязать к определённым событиям в репозитории. И этих actions есть на все
+случаи жизни.</p>
+<p>Порядок действий получается следующий: происходит пуш нового контента в репозиторий, автоматически должен сгенерироваться
+сайт, на сервере необходимо удалить старую версию сайта и залить новую. Для загрузки файлов на сервер можно использовать
+ssh и для этого как раз есть <a href="https://github.com/marketplace/actions/copy-via-ssh">copy via ssh</a>, также от того же автора
+есть <a href="https://github.com/marketplace/actions/run-ssh-command">run ssh command</a>. Последнее поможет в удалении файлов.
+Для связи по ssh в секретах репозитория надо прописать данные для подключения к серверу.</p>
+<p>Как оказалось генерацию сайта тоже можно делать на гитхабе и не держать ни единого файла в репозитории, кроме исходников.
+Поскольку в процессе исполнения github у себя поднимает виртуальную машину, то можно спокойно к ней подключить python,
+установить зависимости и делать что угодно с файлами репозитория, до тех пор пока количество одновременных действий меньше 20.
+Поэтому все зависимости записываем в requirements.txt и пишем по сути следующий скрипт.</p>
+<div class="highlight"><pre><span></span><code>python -m pip install upgrade pip
+pip install -r requirements.txt
+pelican content -s publishconf.py
+
+ssh user@domen <span class="s1">&#39;rm -rfv *&#39;</span>
+scp -r output user@domen:./
+ssh user@domen <span class="s1">&#39;mv htaccess .htaccess&#39;</span>
+</code></pre></div>
+
+
+<p>Последняя команда это ещё один костыль. Просто так скрытые файлы передавать не получается, а вот переименовать там "на
+месте" - запросто. Также не нужно думать об аутентификации, всё это делают сами gihub actions. В итоге получается .yml 
+файл, в котором это всё описано в доступном для гитхаба виде. Например команда для копирования файлов выглядит вот так:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Publish site</span>
+  <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">garygrossgarten/github-action-scp@v0.6.0</span>
+  <span class="nt">with</span><span class="p">:</span>
+    <span class="nt">local</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">output</span>
+    <span class="nt">remote</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./</span>
+    <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{secrets.HOST}}</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{secrets.USER}}</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{secrets.PASSWORD}}</span>
+</code></pre></div>
+
+
+<p>Получается на каждый пуш в репозиторий, когда кто-либо из участников напишет новую статью, гитхаб сам всё соберёт и
+отправит. Удобно и просто.</p>
     </div>
 </div>
 
