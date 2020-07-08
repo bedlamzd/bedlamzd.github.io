@@ -21,15 +21,15 @@ template: project
 используется язык [Jinja2](https://jinja.palletsprojects.com/), похожий на Django template language. Таким образом можно
 сделать например отображение активной вкладки из меню навигации.
 
-    :::jinja2
-    {% for title, link in MENUITEMS %}
-        {% set full_link = link | format_siteurl %}
-        {% set curr_link = output_file.replace('index.html', '') | format_siteurl %}
-        <li class="nav-item {% if curr_link == full_link %} active {% endif %}">
-            <a href="{{full_link}}" class="nav-link">{{title}}</a>
-        </li>
-    {% endfor %}
-
+```jinja2
+{% for title, link in MENUITEMS %}
+    {% set full_link = link | format_siteurl %}
+    {% set curr_link = output_file.replace('index.html', '') | format_siteurl %}
+    <li class="nav-item {% if curr_link == full_link %} active {% endif %}">
+        <a href="{{full_link}}" class="nav-link">{{title}}</a>
+    </li>
+{% endfor %}
+```
 
 Здесь фильтр formal_siteurl из плагина [htmlsanity](https://mcss.mosra.cz/plugins/htmlsanity/) используется чтобы не
 писать неудобное `SITEURL + '/'`. Из-за того что многие страницы лежат по пути `path/to/page/index.html`, чтобы можно было
@@ -52,29 +52,30 @@ ssh и для этого как раз есть [copy via ssh](https://github.co
 установить зависимости и делать что угодно с файлами репозитория, до тех пор пока количество одновременных действий меньше 20.
 Поэтому все зависимости записываем в requirements.txt и пишем по сути следующий скрипт.
 
-    :::shell script
-    python -m pip install upgrade pip
-    pip install -r requirements.txt
-    pelican content -s publishconf.py
-    
-    ssh user@domen 'rm -rfv *'
-    scp -r output user@domen:./
-    ssh user@domen 'mv htaccess .htaccess'
+```sh
+python -m pip install upgrade pip
+pip install -r requirements.txt
+pelican content -s publishconf.py
+
+ssh user@domen 'rm -rfv *'
+scp -r output user@domen:./
+ssh user@domen 'mv htaccess .htaccess'
+```
 
 Последняя команда это ещё один костыль. Просто так скрытые файлы передавать не получается, а вот переименовать там "на
 месте" - запросто. Также не нужно думать об аутентификации, всё это делают сами gihub actions. В итоге получается .yml 
 файл, в котором это всё описано в доступном для гитхаба виде. Например команда для копирования файлов выглядит вот так:
 
-    :::yaml
-    - name: Publish site
-      uses: garygrossgarten/github-action-scp@v0.6.0
-      with:
-        local: output
-        remote: ./
-        host: ${{secrets.HOST}}
-        username: ${{secrets.USER}}
-        password: ${{secrets.PASSWORD}}
-    
+```yaml
+- name: Publish site
+  uses: garygrossgarten/github-action-scp@v0.6.0
+  with:
+    local: output
+    remote: ./
+    host: ${{secrets.HOST}}
+    username: ${{secrets.USER}}
+    password: ${{secrets.PASSWORD}}
+```
 
 Получается на каждый пуш в репозиторий, когда кто-либо из участников напишет новую статью, гитхаб сам всё соберёт и
 отправит. Удобно и просто.
