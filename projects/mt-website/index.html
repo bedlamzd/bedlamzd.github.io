@@ -33,7 +33,7 @@
 <div class="container-fluid article">
     <div class="container article__header">
         <h1>MT.Website</h1>
-        8 Июль 2020
+        Wed 08 July 2020
     </div>
 
 
@@ -51,14 +51,14 @@
 карточки на главной, страницы под проекты и так далее - и подготовил шаблоны и иерархию для сайта. Для шаблонов в pelican
 используется язык <a href="https://jinja.palletsprojects.com/">Jinja2</a>, похожий на Django template language. Таким образом можно
 сделать например отображение активной вкладки из меню навигации.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">for</span> <span class="nv">title</span><span class="o">,</span> <span class="nv">link</span> <span class="k">in</span> <span class="nv">MENUITEMS</span> <span class="cp">%}</span>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">title</span><span class="o">,</span> <span class="nv">link</span> <span class="k">in</span> <span class="nv">MENUITEMS</span> <span class="cp">%}</span>
     <span class="cp">{%</span> <span class="k">set</span> <span class="nv">full_link</span> <span class="o">=</span> <span class="nv">link</span> <span class="o">|</span> <span class="nf">format_siteurl</span> <span class="cp">%}</span>
     <span class="cp">{%</span> <span class="k">set</span> <span class="nv">curr_link</span> <span class="o">=</span> <span class="nv">output_file.replace</span><span class="o">(</span><span class="s1">&#39;index.html&#39;</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">)</span> <span class="o">|</span> <span class="nf">format_siteurl</span> <span class="cp">%}</span>
     <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;nav-item </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">curr_link</span> <span class="o">==</span> <span class="nv">full_link</span> <span class="cp">%}</span><span class="s"> active </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span><span class="nv">full_link</span><span class="cp">}}</span><span class="s">&quot;</span> <span class="na">class=</span><span class="s">&quot;nav-link&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span><span class="nv">title</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
     <span class="nt">&lt;/li&gt;</span>
 <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
-</code></pre></div>
+</pre></div>
 
 
 <p>Здесь фильтр formal_siteurl из плагина <a href="https://mcss.mosra.cz/plugins/htmlsanity/">htmlsanity</a> используется чтобы не
@@ -78,20 +78,20 @@ ssh и для этого как раз есть <a href="https://github.com/mark
 Поскольку в процессе исполнения github у себя поднимает виртуальную машину, то можно спокойно к ней подключить python,
 установить зависимости и делать что угодно с файлами репозитория, до тех пор пока количество одновременных действий меньше 20.
 Поэтому все зависимости записываем в requirements.txt и пишем по сути следующий скрипт.</p>
-<div class="highlight"><pre><span></span><code>python -m pip install upgrade pip
+<div class="highlight"><pre><span></span>python -m pip install upgrade pip
 pip install -r requirements.txt
 pelican content -s publishconf.py
 
 ssh user@domen <span class="s1">&#39;rm -rfv *&#39;</span>
 scp -r output user@domen:./
 ssh user@domen <span class="s1">&#39;mv htaccess .htaccess&#39;</span>
-</code></pre></div>
+</pre></div>
 
 
 <p>Последняя команда это ещё один костыль. Просто так скрытые файлы передавать не получается, а вот переименовать там "на
 месте" - запросто. Также не нужно думать об аутентификации, всё это делают сами gihub actions. В итоге получается .yml 
 файл, в котором это всё описано в доступном для гитхаба виде. Например команда для копирования файлов выглядит вот так:</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Publish site</span>
+<div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Publish site</span>
   <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">garygrossgarten/github-action-scp@v0.6.0</span>
   <span class="nt">with</span><span class="p">:</span>
     <span class="nt">local</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">output</span>
@@ -99,7 +99,7 @@ ssh user@domen <span class="s1">&#39;mv htaccess .htaccess&#39;</span>
     <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{secrets.HOST}}</span>
     <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{secrets.USER}}</span>
     <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{secrets.PASSWORD}}</span>
-</code></pre></div>
+</pre></div>
 
 
 <p>Получается на каждый пуш в репозиторий, когда кто-либо из участников напишет новую статью, гитхаб сам всё соберёт и
